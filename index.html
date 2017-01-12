@@ -11,7 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> 
     <script src="semantic/dist/semantic.min.js"></script>
     <script>
-        var lastNum = 0;
+        var lastNum = 1;
         $(document)
             .ready(function() {
 
@@ -33,27 +33,26 @@
 
             // poster on click events
             $('#like, #dislike').click(function(){
-                var randNum = 0;
-                do {
-                     randNum = Math.floor(Math.random() * 30) + 1;
-                } while (randNum == lastNum)
-                lastNum = randNum;
-                $('#poster').attr('src','images/'+randNum+'.jpg');
+                // shift posters pos 2+ over
                 for (var i=6; i > 1; i--) {
                     $('#queue'+i)
                         .attr('src',
                         $('#queue'+(i-1))
                             .attr('src')
-                        );
+                    );
                     $('#queue'+i)
                         .parent()
                         .attr('class',
                         $('#queue'+(i-1))
                             .parent()
                             .attr('class')
-                        );
+                    );
                 }
-                $("#queue1").attr('src','images/'+randNum+'.jpg');
+
+                // set pos 1 poster
+                $("#queue1").attr('src','images/'+lastNum+'.jpg');
+                
+                // set button clicked
                 switch ($(this).attr('id')) {
                     case 'like':
                         $("#queue1")
@@ -74,6 +73,14 @@
                     default:
                         alert('DMEX')
                 }
+
+                // generate new rateable poster
+                var randNum = 0;
+                do {
+                     randNum = Math.floor(Math.random() * 30) + 1;
+                } while (randNum == lastNum)
+                lastNum = randNum;
+                $('#poster').attr('src','images/'+randNum+'.jpg');
             });
 
             // create dimmer to display overlay -- TODO:CHANGE
